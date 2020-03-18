@@ -1,19 +1,40 @@
+
 WITH
-	specialtyNewPatientEncounters AS
+	
+  PC AS
+  (
+  	select op.jc_uid, op.pat_enc_csn_id_coded as PC_enc, 
+	      enc.appt_when_jittered as PC_app_datetime, op.order_time_jittered as PC_ref_datetime
+		from `starr_datalake2018.order_proc` as op 
+		  join `starr_datalake2018.encounter` as enc on op.pat_enc_csn_id_coded = enc.pat_enc_csn_id_coded 
+		where proc_code = 'REF31' -- REFERRAL TO ENDOCRINE CLINIC (internal)
+		and ordering_mode = 'Outpatient'
+  ),
+  
+  SP AS
 	(
-		select enc.jc_uid, enc.pat_enc_csn_id_coded as specialtyEncounterId, enc.appt_when_jittered as specialtyEncounterDateTime
-		from `starr_datalake2018.encounter` as enc join `starr_datalake2018.dep_map` as dep on enc.department_id = dep.department_id 
+		select enc.jc_uid, enc.pat_enc_csn_id_coded as SP_enc, enc.appt_when_jittered as SP_app_datetime,
+      --DX.dx_name as SP_diagnosis
+      PR.description as proc_name
+		from `starr_datalake2018.encounter` as enc 
+      join `starr_datalake2018.dep_map` as dep on enc.department_id = dep.department_id     
+      --join `starr_datalake2018.diagnosis_code` as DX on (enc.pat_enc_csn_id_coded = DX.pat_enc_csn_id_coded)
+      join `starr_datalake2018.order_proc` as PR on (enc.pat_enc_csn_id_coded = PR.pat_enc_csn_id_coded)
 		where dep.specialty_dep_c = '7' -- dep.specialty like 'Endocrin%'
-		and visit_type like 'NEW PATIENT%' -- Naturally screens to only 'Office Visit' enc_type 
+    		and visit_type like 'NEW PATIENT%' -- Naturally screens to only 'Office Visit' enc_type 
 		-- and appt_type in ('Office Visit','Appointment') -- Otherwise Telephone, Refill, Orders Only, etc.
 		and appt_status = 'Completed'
-		and extract(YEAR from enc.appt_time_jittered) >= 2017	-- >= So capture follow-up visits in 2018 as well
-		-- 4796 records in 2017 (10650 for 2017 and after, largely including 2018)
-	)
+	),
+  
+Joined_Table AS  
+(
+  Select PC.*, SP.* EXCEPT (jc_uid)
+  FROM PC JOIN SP USING (jc_uid)
+  WHERE SP.SP_app_datetime BETWEEN PC.PC_ref_datetime AND DATETIME_ADD(PC.PC_ref_datetime, INTERVAL 4 MONTH)
+  ORDER BY PC.jc_uid 
+)
 
-select op.proc_code, description, count(*)
-		from specialtyNewPatientEncounters as specEnc
-		  join `starr_datalake2018.order_proc` as op on specEnc.specialtyEncounterId = op.pat_enc_csn_id_coded 
-		group by proc_code, description
-		order by count(*) desc
-    
+Select proc_name, count(*) as num
+FROM Joined_Table 
+GROUP BY proc_name
+ORDER BY num DESC
