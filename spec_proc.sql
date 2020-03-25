@@ -17,7 +17,8 @@ WITH
 		select enc.jc_uid, enc.pat_enc_csn_id_coded as SP_enc, enc.appt_when_jittered as SP_app_datetime,
       --DX.dx_name as SP_diagnosis
       PR.proc_id,
-      PR.description as proc_name
+      PR.description as proc_name,
+      authrzing_prov_map_id as prov_id
 		from `starr_datalake2018.encounter` as enc 
       join `starr_datalake2018.dep_map` as dep on enc.department_id = dep.department_id     
       --join `starr_datalake2018.diagnosis_code` as DX on (enc.pat_enc_csn_id_coded = DX.pat_enc_csn_id_coded)
@@ -34,3 +35,5 @@ Select PC.*, SP.* EXCEPT (jc_uid)
   ORDER BY PC.jc_uid 
   
  )
+
+
