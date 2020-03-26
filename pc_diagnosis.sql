@@ -6,7 +6,7 @@ WITH
   (
   	select op.jc_uid, op.pat_enc_csn_id_coded as PC_enc, 
 	      enc.appt_when_jittered as PC_app_datetime, op.order_time_jittered as PC_ref_datetime,
-        DX.dx_name as PC_diagnosis
+        DX.dx_name as PC_diagnosis, DX.dx_id as PC_dx_id
 		from `starr_datalake2018.order_proc` as op 
 		  join `starr_datalake2018.encounter` as enc on op.pat_enc_csn_id_coded = enc.pat_enc_csn_id_coded 
       join `starr_datalake2018.diagnosis_code` as DX on (enc.pat_enc_csn_id_coded = DX.pat_enc_csn_id_coded)
