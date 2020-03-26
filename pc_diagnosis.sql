@@ -16,10 +16,9 @@ WITH
   
   SP AS
 	(
-		select enc.jc_uid, enc.pat_enc_csn_id_coded as SP_enc, enc.appt_when_jittered as SP_app_datetime,
-      DX.dx_name as SP_diagnosis
+		select enc.jc_uid, enc.pat_enc_csn_id_coded as SP_enc, enc.appt_when_jittered as SP_app_datetime
 		from `starr_datalake2018.encounter` as enc join `starr_datalake2018.dep_map` as dep on enc.department_id = dep.department_id    
-    join `starr_datalake2018.diagnosis_code` as DX on (enc.pat_enc_csn_id_coded = DX.pat_enc_csn_id_coded)
+    --join `starr_datalake2018.diagnosis_code` as DX on (enc.pat_enc_csn_id_coded = DX.pat_enc_csn_id_coded)
 		where dep.specialty_dep_c = '7' -- dep.specialty like 'Endocrin%'
     		and visit_type like 'NEW PATIENT%' -- Naturally screens to only 'Office Visit' enc_type 
 		-- and appt_type in ('Office Visit','Appointment') -- Otherwise Telephone, Refill, Orders Only, etc.
