@@ -16,6 +16,7 @@ WITH
 	(
 		select enc.jc_uid, enc.pat_enc_csn_id_coded as SP_enc, enc.appt_when_jittered as SP_app_datetime,
       --DX.dx_name as SP_diagnosis
+      PR.order_type,
       PR.proc_id,
       PR.description as proc_name,
       PR.order_time_jittered as proc_order_time,
@@ -28,6 +29,7 @@ WITH
     		and visit_type like 'NEW PATIENT%' -- Naturally screens to only 'Office Visit' enc_type 
 		-- and appt_type in ('Office Visit','Appointment') -- Otherwise Telephone, Refill, Orders Only, etc.
 		and appt_status = 'Completed'
+    and (PR.order_type like 'Lab%' OR PR.order_type like 'Imaging%')
 	),
   
 Joined AS 
