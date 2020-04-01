@@ -21,6 +21,7 @@ WITH
       description as proc_name,
       order_time_jittered as proc_order_time,
 		from `starr_datalake2018.order_proc`  
+    WHERE ordering_mode = 'Outpatient'
   ),
   
   SP AS
