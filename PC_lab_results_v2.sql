@@ -38,6 +38,7 @@ With PC as
  FROM PC 
  JOIN LR on (LR.rit_uid=PC.jc_uid)
  INNER JOIN Top_Labs ON (Top_Labs.lab_name= LR.lab_name)
-  WHERE PC.PC_ref_datetime BETWEEN LR.lab_time AND DATETIME_ADD(LR.lab_time, INTERVAL 2 MONTH)
+  WHERE PC.PC_ref_datetime BETWEEN DATETIME_SUB(LR.lab_time, INTERVAL 10 DAY) AND DATETIME_ADD(LR.lab_time, INTERVAL 2 MONTH)
  )
  --GROUP BY PC_enc
+ 
