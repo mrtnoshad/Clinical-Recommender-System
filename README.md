@@ -11,7 +11,7 @@
 
 4- Prepare the data for Model 2 (collaborative filtering): Run CF_data_processing Jupiter notebook
 * Note that this processing includes melting the data from feature matrix form to ratings matrix
-* The training data includes procedures both from PCP and Specialty
+* The training data includes procedures both from PCP (train of both PCP and Specialty and test of PCP) and Specialty (training and test of Specialty)
 * The test data only includes procedures from the PCP
 
 5- Run each of the CF models 
