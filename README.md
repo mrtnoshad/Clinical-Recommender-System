@@ -5,9 +5,10 @@
 
 
 1- Run SQL queries to separately extract PCP lab results, diagnosis, procedures and Specialty procedures
-2- Run the Jupiter notebooks to filter the features to include only top N results, and then create the features matrix per PCP encounter id
-3- Run join_tables to create a table containing all tables and create train and test tables (two separate csv files)
 
+2- Run the Jupiter notebooks to filter the features to include only top N results, and then create the features matrix per PCP encounter id
+
+3- Run join_tables to create a table containing all tables and create train and test tables (two separate csv files)
 
 4- Prepare the data for Model 2 (collaborative filtering): Run CF_data_processing Jupiter notebook
 * Note that this processing includes melting the data from feature matrix form to ratings matrix
