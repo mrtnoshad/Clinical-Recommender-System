@@ -6,12 +6,16 @@
 Have the train and test data ready.
 
 1- Run Model_1_Deep.ipynb (this is used in the proposed model)
+
 2- Run all Model_2_*.ipynb
 * Model_2_CF_AE.ipynb is used in the proposed model and the rest of the models are those we compare the proposed model with)
 * Note that Model_2_NMF.ipynb has an error, but you can exclude that from the analysis.
+
 3- Run Unit_Deep_model.ipynb (this is one of the models that we compare the proposed model with)
+
 4- Run Model_ensemble.ipynb and Model_ensemble_w_prov_id.ipynb
 * Note that Model_ensemble_w_prov_id.ipynb uses the provider ids as additional data.
+
 5- Run evaluate_all.ipynb to plot the results
 * Note that when running the plot the output of the ensemble_model was not as we got in the paper. It needs some debugging.
 
